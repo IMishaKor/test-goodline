@@ -19,25 +19,23 @@ function Navbar(props) {
             {props.isAuth ? (
               <>
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
-                    Здравствуйте, {props.authUser.name}!
-                  </a>
+                  <div className="nav-link active">Здравствуйте, {props.authUser.name}!</div>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" aria-current="page" href="#" onClick={onClickLogout}>
+                  <div className="nav-link cursor-pointer" onClick={onClickLogout}>
                     Выйти
-                  </a>
+                  </div>
                 </li>
               </>
             ) : (
               <>
                 <li className="nav-item">
-                  <NavLink className="nav-link" aria-current="page" to="/login">
+                  <NavLink className="nav-link" to="/login">
                     Войти
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" aria-current="page" to="/registration">
+                  <NavLink className="nav-link" to="/registration">
                     Регистрация
                   </NavLink>
                 </li>

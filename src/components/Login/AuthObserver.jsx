@@ -10,6 +10,7 @@ function AuthObserver(props) {
         props.authMe(userId);
       }
     });
+    // eslint-disable-next-line
   }, []);
   return <></>;
 }

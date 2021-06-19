@@ -1,3 +1,29 @@
+body,
+#root,
+.loading {
+  min-height: 100vh;
+}
 .container {
   max-width: 700px;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.table .notesСolumnStatus {
+  width: 145px;
+}
+.table .notesBtnControl {
+  width: 1px;
+  padding: 2px;
+}
+.table .form-control {
+  padding: 0.25rem 0.5rem;
+  background-color: #fff;
+}
+.table .form-select {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  background-color: #fff;
 }
