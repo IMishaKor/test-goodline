@@ -1,28 +1,71 @@
-function Login() {
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Redirect, NavLink } from 'react-router-dom';
+import { authLogin } from '../../redux/auth-reducer';
+
+function Login(props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onSubmitForm = (e) => {
+    e.preventDefault();
+
+    if (!props.isFetching) {
+      // проверка формы: корректность емаила
+      // вывод ошибок/предупреждений
+      let isError = false;
+      if (!isError) {
+        props.authLogin(email, password);
+      } else {
+        // ...
+      }
+    }
+  };
+
+  if (props.isAuth) {
+    return <Redirect to="/" />;
+  }
+
   return (
-    <form>
-      <div class="mb-3">
-        <label for="email" class="form-label">
+    <form onSubmit={onSubmitForm}>
+      <div className="mb-3">
+        <label htmlFor="email" className="form-label">
           Адрес электронной почты
         </label>
-        <input type="email" class="form-control form-control-lg" id="email" />
+        <input
+          type="email"
+          className="form-control form-control-lg"
+          id="email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
       </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">
+      <div className="mb-3">
+        <label htmlFor="password" className="form-label">
           Пароль
         </label>
-        <input type="password" class="form-control form-control-lg" id="password" />
+        <input
+          type="password"
+          className="form-control form-control-lg"
+          id="password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+        />
       </div>
-      <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-primary btn-lg">
+      <div className="d-flex justify-content-between">
+        <button type="submit" className="btn btn-primary btn-lg " disabled={props.isFetching}>
           Войти
         </button>
-        <button type="submit" class="btn btn-default btn-lg">
-          Зарегистрироваться
-        </button>
+        <NavLink className="btn btn-default btn-lg" to="/registration">
+          Хотите присоединиться?
+        </NavLink>
       </div>
     </form>
   );
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  isFetching: state.auth.isFetching,
+  isAuth: state.auth.isAuth,
+});
+export default connect(mapStateToProps, { authLogin })(Login);

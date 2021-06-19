@@ -1,13 +1,45 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { addUser } from '../../redux/profile-reducer';
 
-function Registration() {
+function Registration(props) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
+  const onSubmitForm = (e) => {
+    e.preventDefault();
+
+    if (!props.isFetching) {
+      // проверка формы: корректность емаила, совпадение паролей
+      // вывод ошибок/предупреждений
+      let isError = false;
+      if (password !== passwordConfirm) {
+        console.log('Пароли не совпадают');
+        isError = true;
+      }
+      if (!isError) {
+        props
+          .addUser(email, name, password)
+          .then((d) =>
+            console.log(
+              'Тут можно настроить дальнейшее поведение формы: вывод ошибок, обнуление полей, редирект на авторизацию и т.п.'
+            )
+          );
+      } else {
+        // Показываем сообщение о допущенных ошибках
+      }
+    }
+  };
+
+  if (props.isAuth) {
+    return <Redirect to="/" />;
+  }
+
   return (
-    <form>
+    <form onSubmit={onSubmitForm}>
       <div className="mb-3">
         <label htmlFor="email" className="form-label">
           Адрес электронной почты
@@ -62,5 +94,8 @@ function Registration() {
     </form>
   );
 }
-
-export default Registration;
+const mapStateToProps = (state) => ({
+  isFetching: state.profile.isFetching,
+  isAuth: state.auth.isAuth,
+});
+export default connect(mapStateToProps, { addUser })(Registration);

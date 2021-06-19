@@ -1,6 +1,12 @@
+import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { authLogout } from '../../redux/auth-reducer';
 import logo from '../../logo.png';
 
-function Navbar() {
+function Navbar(props) {
+  const onClickLogout = () => {
+    props.authLogout();
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
@@ -10,21 +16,41 @@ function Navbar() {
         </a>
         <div>
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
-                Здравствуйте, Михаил!
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#">
-                Выйти
-              </a>
-            </li>
+            {props.isAuth ? (
+              <>
+                <li className="nav-item">
+                  <a className="nav-link active" aria-current="page" href="#">
+                    Здравствуйте, {props.authUser.name}!
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" aria-current="page" href="#" onClick={onClickLogout}>
+                    Выйти
+                  </a>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" aria-current="page" to="/login">
+                    Войти
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" aria-current="page" to="/registration">
+                    Регистрация
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
     </nav>
   );
 }
-
-export default Navbar;
+const mapStateToProps = (state) => ({
+  isAuth: state.auth.isAuth,
+  authUser: state.auth.authUser,
+});
+export default connect(mapStateToProps, { authLogout })(Navbar);

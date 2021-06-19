@@ -3,14 +3,16 @@ import { authAPI } from '../api/api';
 
 const SET_AUTH_USER_DATA = 'AUTH/SET_AUTH_USER_DATA';
 const DESTROY_AUTH_USER_DATA = 'AUTH/DESTROY_USER_DATA';
-const TOGGLE_IS_FETCHING = 'AUTH/TOGGLE_IS_FETCHING';
+const TOGGLE_AUTH_IS_FETCHING = 'AUTH/TOGGLE_IS_FETCHING';
 
 let initialState = {
-  userId: null,
-  email: null,
-  name: null,
+  authUser: {
+    userId: null,
+    email: null,
+    name: null,
+  },
   isAuth: false,
-  isFetching: true,
+  isFetching: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -18,18 +20,20 @@ const authReducer = (state = initialState, action) => {
     case SET_AUTH_USER_DATA:
       return {
         ...state,
-        ...action.payload,
+        authUser: action.payload,
         isAuth: true,
       };
     case DESTROY_AUTH_USER_DATA:
       return {
         ...state,
-        userId: null,
-        name: null,
-        login: null,
+        authUser: {
+          userId: null,
+          email: null,
+          name: null,
+        },
         isAuth: false,
       };
-    case TOGGLE_IS_FETCHING:
+    case TOGGLE_AUTH_IS_FETCHING:
       return {
         ...state,
         isFetching: action.isFetching,
@@ -38,51 +42,49 @@ const authReducer = (state = initialState, action) => {
       return state;
   }
 };
-const _setAuthUserData = (userId, name, login) => ({ type: SET_AUTH_USER_DATA, payload: { userId, name, login } });
+const _setAuthUserData = (userId, email, name) => ({ type: SET_AUTH_USER_DATA, payload: { userId, email, name } });
 const _destroyAutUserData = () => ({ type: DESTROY_AUTH_USER_DATA });
-const _toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
+const _toggleIsFetching = (isFetching) => ({ type: TOGGLE_AUTH_IS_FETCHING, isFetching });
 
-export const authMe = () => async (dispatch) => {
+export const authMe = (userId) => async (dispatch) => {
   try {
-    dispatch(_toggleIsFetching(true));
-    const data = await authAPI.authMe();
-
-    if (data.resultCode === 0) {
-      dispatch(_setAuthUserData(data.data.id, data.data.name, data.data.login));
+    const authMeData = await authAPI.authMe(userId);
+    if (authMeData.resultCode === 1) {
+      dispatch(_setAuthUserData(authMeData.data.userId, authMeData.data.email, authMeData.data.name));
+      dispatch(_toggleIsFetching(false));
     } else {
       dispatch(_destroyAutUserData());
     }
+    return authMeData.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const authLogin = (email, password) => async (dispatch) => {
+  try {
+    dispatch(_toggleIsFetching(true));
+    const authLoginData = await authAPI.authLogin(email, password);
+    if (authLoginData.resultCode === 1) {
+      return await dispatch(authMe(authLoginData.data.userId));
+    } else {
+      console.log('Чтото пошло не так');
+    }
     dispatch(_toggleIsFetching(false));
 
-    return data;
+    return authLoginData.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
-export const authLogin = (name, password, rememberMy, captcha) => async (dispatch, getState) => {
-  try {
-    const authLoginData = await authAPI.authLogin(name, password, rememberMy, captcha);
-    if (authLoginData.resultCode === 0) {
-      return await dispatch(authMe());
-    } else if (authLoginData.resultCode === 10) {
-      // const captchaUrl = getState().auth.captchaUrl;
-      // if (!captchaUrl) {
-      //   await dispatch(getCaptchaUrl());
-      // }
-    }
-    return authLoginData;
-  } catch (error) {
-    console.log(error);
-  }
-};
 export const authLogout = () => async (dispatch) => {
   try {
     const authLogoutData = await authAPI.authLogout();
-    if (authLogoutData.resultCode === 0) {
+    if (authLogoutData.resultCode === 1) {
       dispatch(_destroyAutUserData());
     }
-    return authLogoutData;
+    return authLogoutData.data;
   } catch (error) {
     console.log(error);
   }
