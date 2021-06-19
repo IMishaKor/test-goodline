@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, NavLink } from 'react-router-dom';
-import { getNotes } from '../../redux/notes-reducer';
+import { getNotes, filterNotes } from '../../redux/notes-reducer';
 import Note from './Note';
 
 function Notes(props) {
@@ -31,25 +31,43 @@ function Notes(props) {
             </tr>
           </thead>
           <tbody>
-            <Note />
+            {props.isFetching ? (
+              <tr>
+                <td className="text-center" colSpan="4">
+                  Загрузка...
+                </td>
+              </tr>
+            ) : props.notes.length === 0 ? (
+              <tr>
+                <td className="text-center" colSpan="4">
+                  заметок нет
+                </td>
+              </tr>
+            ) : (
+              props.notes.map((n) => <Note note={n} key={n.noteId} />)
+            )}
           </tbody>
-          <tfoot>
-            <tr>
-              <th>
-                <input type="text" className="form-control form-control-sm" />
-              </th>
-              <th>
-                <select className="form-select form-select-sm ">
-                  <option value="">...</option>
-                  <option value="Новая">Новая</option>
-                  <option value="В процессе">В процессе</option>
-                  <option value="Выполненая">Выполненая</option>
-                </select>
-              </th>
-              <th></th>
-              <th></th>
-            </tr>
-          </tfoot>
+          {props.notes.length > 0 ? (
+            <tfoot>
+              <tr>
+                <th>
+                  <input type="text" className="form-control form-control-sm" />
+                </th>
+                <th>
+                  <select className="form-select form-select-sm ">
+                    <option value="">...</option>
+                    <option value="Новая">Новая</option>
+                    <option value="В процессе">В процессе</option>
+                    <option value="Выполненая">Выполненая</option>
+                  </select>
+                </th>
+                <th></th>
+                <th></th>
+              </tr>
+            </tfoot>
+          ) : (
+            <></>
+          )}
         </table>
       </form>
     </>
@@ -58,5 +76,6 @@ function Notes(props) {
 const mapStateToProps = (state) => ({
   isAuth: state.auth.isAuth,
   notes: state.notes.notes,
+  isFetching: state.notes.isFetching,
 });
 export default connect(mapStateToProps, { getNotes })(Notes);

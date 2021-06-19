@@ -10,10 +10,10 @@ function Navbar(props) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
-        <a className="navbar-brand mb-0 h1" href="/">
+        <NavLink className="navbar-brand mb-0 h1" to="/">
           <img src={logo} className="d-inline-block align-text-top" alt="logo" />
           OnlineNotes
-        </a>
+        </NavLink>
         <div>
           <ul className="navbar-nav">
             {props.isAuth ? (

@@ -58,5 +58,8 @@ export const getNotes = () => async (dispatch) => {
     console.error(error);
   }
 };
+export const filterNotes = (dispatch) => {
+  console.log(1);
+};
 
 export default notesReducer;
