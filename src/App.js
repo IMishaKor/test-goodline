@@ -8,15 +8,20 @@ import Registration from './components/Profile/Registration';
 import Login from './components/Login/Login';
 import Notes from './components/Notes/Notes';
 import AddNote from './components/Notes/AddNote';
+import EditNote from './components/Notes/EditNote';
 import AuthObserver from './components/Login/AuthObserver';
+import Page404 from './components/404';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
 function App(props) {
   // Следующий код авторизовывает пользователя после обновления страници если оно того требует
   // Не нравится мне это решение, но ничего другого в голову не лезет
-  const userId = +localStorage.getItem('AUTH_USER_ID');
-  const initApp = () => props.setInit(userId);
+
+  const initApp = () => {
+    const userId = +localStorage.getItem('AUTH_USER_ID');
+    props.setInit(userId);
+  };
   useEffect(initApp, [initApp]);
   if (!props.init) {
     return (
@@ -37,7 +42,9 @@ function App(props) {
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
           <Route path="/notes/add" component={AddNote} />
-          <Route path={['/notes', '/']} component={Notes} />
+          <Route path="/notes/edit/:noteId(\d+)" component={EditNote} />
+          <Route path={['/notes', '/']} component={Notes} exact />
+          <Route path={['*', '/404']} component={Page404} />
         </Switch>
       </div>
     </>
@@ -45,6 +52,8 @@ function App(props) {
 }
 const mapStateToProps = (state) => ({
   init: state.app.init,
+  isAuth: state.auth.isAuth,
+  userId: state.auth.authUser.userId,
 });
 
 export default connect(mapStateToProps, { setInit })(App);

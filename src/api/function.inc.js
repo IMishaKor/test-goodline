@@ -7,3 +7,15 @@ export const fakeFetch = (callback) => {
     setTimeout(() => resolve(data), 1000);
   });
 };
+
+export const sortBy = (field, reverse) => {
+  const key = (x) => x[field];
+
+  reverse = reverse === 'ASC' ? 1 : -1;
+
+  return (a, b) => {
+    a = key(a);
+    b = key(b);
+    return reverse * ((a > b) - (b > a));
+  };
+};

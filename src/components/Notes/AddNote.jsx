@@ -82,7 +82,7 @@ function AddNote(props) {
           <button type="submit" className="btn btn-primary btn-lg " disabled={props.isFetching}>
             Добавить
           </button>
-          <NavLink className="btn btn-light btn-lg" to="/registration">
+          <NavLink className="btn btn-light btn-lg" to="/notes">
             Отмена
           </NavLink>
         </div>

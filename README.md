@@ -1,4 +1,12 @@
-# Getting Started with Create React App
+# Тестовое задание на позицию React-разработчик: приложение “Заметки”
+
+- ul
+
+* ul
+  - ul - для вложенных списков нужно поставить 2 пробела
+    - ul - третий уровень
+      - ul - четвёртый уровень
+        - ul - пятый и т.д.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

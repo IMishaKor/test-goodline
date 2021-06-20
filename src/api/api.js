@@ -86,12 +86,86 @@ export const notesAPI = {
     });
     return response;
   },
+  async editNote(noteId, note, status) {
+    const response = await fakeFetch(() => {
+      const result = { resultCode: null, data: null };
+      const notes = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : [];
+
+      notes.forEach((n, k) => {
+        if (n.noteId === noteId) {
+          n.note = note;
+          n.status = status;
+          delete n.editNow;
+        }
+      });
+      localStorage.setItem('notes', JSON.stringify(notes));
+      result.resultCode = 1;
+      return result;
+    });
+    return response;
+  },
+  async editNoteNow(noteId, sessionTabId) {
+    const response = await fakeFetch(() => {
+      const result = { resultCode: null, data: null };
+      const notes = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : [];
+      notes.forEach((n, k) => {
+        if (n.noteId === noteId) {
+          if (sessionTabId) {
+            n.editNow = sessionTabId;
+          } else {
+            delete n.editNow;
+          }
+        }
+      });
+      localStorage.setItem('notes', JSON.stringify(notes));
+      return result;
+    });
+    return response;
+  },
   async getNotes() {
     const response = await fakeFetch(() => {
       const result = { resultCode: null, data: null };
       const userId = +localStorage.getItem('AUTH_USER_ID');
       const notes = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : [];
       result.data = notes.filter((n) => n.userId === userId);
+      result.resultCode = 1;
+      return result;
+    });
+    return response;
+  },
+  async getNote(noteId, sessionTabId) {
+    const response = await fakeFetch(() => {
+      const result = { resultCode: null, data: null };
+      const userId = +localStorage.getItem('AUTH_USER_ID');
+      const notes = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : [];
+      result.data = notes.find((n) => n.userId === userId && n.noteId === noteId);
+      if (result.data) {
+        result.resultCode = 1;
+        if (!result.data.editNow) {
+          result.data.editNow = sessionTabId;
+          notes.forEach((n, k) => {
+            if (n.noteId === noteId) {
+              if (sessionTabId) {
+                n.editNow = sessionTabId;
+              }
+            }
+          });
+          localStorage.setItem('notes', JSON.stringify(notes));
+        }
+      } else {
+        result.resultCode = 2;
+      }
+      return result;
+    });
+    return response;
+  },
+  async removeNote(noteId) {
+    const response = await fakeFetch(() => {
+      const result = { resultCode: null, data: null };
+      const notes = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : [];
+
+      localStorage.setItem('notes', JSON.stringify(notes.filter((n) => n.noteId !== noteId)));
+
       result.resultCode = 1;
       return result;
     });

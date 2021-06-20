@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { addUser } from '../../redux/profile-reducer';
 
 function Registration(props) {
@@ -8,6 +8,7 @@ function Registration(props) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  const history = useHistory();
 
   const onSubmitForm = (e) => {
     e.preventDefault();
@@ -21,13 +22,12 @@ function Registration(props) {
         isError = true;
       }
       if (!isError) {
-        props
-          .addUser(email, name, password)
-          .then((d) =>
-            console.log(
-              'Тут можно настроить дальнейшее поведение формы: вывод ошибок, обнуление полей, редирект на авторизацию и т.п.'
-            )
+        props.addUser(email, name, password).then((d) => {
+          console.log(
+            'Тут можно настроить дальнейшее поведение формы: вывод ошибок, обнуление полей, редирект на авторизацию и т.п.'
           );
+          history.push('/login');
+        });
       } else {
         // Показываем сообщение о допущенных ошибках
       }
