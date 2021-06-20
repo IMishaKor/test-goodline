@@ -104,24 +104,6 @@ export const notesAPI = {
     });
     return response;
   },
-  async editNoteNow(noteId, sessionTabId) {
-    const response = await fakeFetch(() => {
-      const result = { resultCode: null, data: null };
-      const notes = localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : [];
-      notes.forEach((n, k) => {
-        if (n.noteId === noteId) {
-          if (sessionTabId) {
-            n.editNow = sessionTabId;
-          } else {
-            delete n.editNow;
-          }
-        }
-      });
-      localStorage.setItem('notes', JSON.stringify(notes));
-      return result;
-    });
-    return response;
-  },
   async getNotes() {
     const response = await fakeFetch(() => {
       const result = { resultCode: null, data: null };

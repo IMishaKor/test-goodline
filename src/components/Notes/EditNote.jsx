@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, NavLink, useHistory } from 'react-router-dom';
-import { getNote, editNote, setEditNoteNow, updateNoteForm } from '../../redux/notes-reducer';
+import { getNote, editNote, updateNoteForm } from '../../redux/notes-reducer';
 
 function EditNote(props) {
   const noteId = +props.match.params.noteId;
@@ -122,4 +122,4 @@ const mapStateToProps = (state) => ({
   sessionTabId: state.app.sessionTabId,
   isAuth: state.auth.isAuth,
 });
-export default connect(mapStateToProps, { getNote, editNote, setEditNoteNow, updateNoteForm })(EditNote);
+export default connect(mapStateToProps, { getNote, editNote, updateNoteForm })(EditNote);

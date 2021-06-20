@@ -99,13 +99,6 @@ export const editNote = () => async (dispatch, getState) => {
     console.error(error);
   }
 };
-export const setEditNoteNow = (noteId, sessionTabId) => async (dispatch) => {
-  try {
-    await notesAPI.editNoteNow(noteId, sessionTabId);
-  } catch (error) {
-    console.error(error);
-  }
-};
 export const getNotes = () => async (dispatch) => {
   try {
     dispatch(_toggleIsFetching(true));
