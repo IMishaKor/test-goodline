@@ -1,78 +1,26 @@
 # Тестовое задание на позицию React-разработчик: приложение “Заметки”
 
-- ul
+## Требования для Junior-разработчика:
 
-* ul
-  - ul - для вложенных списков нужно поставить 2 пробела
-    - ul - третий уровень
-      - ul - четвёртый уровень
-        - ul - пятый и т.д.
+- ✔️Приложение должно быть написано на React, для роутинга использовать соответствующую библиотеку;
+- ✔️Для управления состоянием приложения использовать Redux или MobX;
+- ✔️Для хранения заметок, логина, пароля использовать локальное хранилище;
+- ✔️Не манипулировать DOM-элементами напрямую, работать с интерфейсом только с помощью React’а;
+- ✔️Приложение должно быть приятно оформлено, т.е. иметь хоть какой-то дизайн (разрешается использовать сторонние библиотеки готовых компонентов, но не обязательно).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Требования для Middle-разработчика:
 
-## Available Scripts
+- ❌Использование TypeScript;
+- ✔️Приложение можно запустить одновременно в двух вкладках браузера, следовательно изменения, сделанные из одной вкладки, должны отобразиться автоматически в другой. Также если заметку открыли на редактирование, не разрешать доступ к ней из других вкладок;
+- ✔️Если произошел логин\разлогин в одной вкладке, то приложение запущенное в других вкладках в этот момент должно как-то обработать эти события (как именно должно вести себя приложение, придумайте сами)
+- ✔️Имитировать запросы на сервер, для авторизации и действий с заметками;
+- ✔️Реализовать шифрование паролей;
+- ✔️Добавить горячие клавиши на какие-либо действия;
+- ✔️Добавить возможность поиска по заметкам, и сортировку.
 
-In the project directory, you can run:
+## Итог:
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Все отмеченные пункты так или иначе сделал.
+Из самых видных недоработок форма регистрации и авторизации без валидации. Что касается запрета на редактирование, пример поведения: в окне 1 открыто редактирование; открываем редактирование в окне 2 – все полня не активны и выведено соответствующие сообщение; сохраняем в окне 1, после чего в окне 2 всё разблокируется и подгрузятся актуальные данные. Вот тут вторая недоработка: если в окне 1 сделать что угодно кроме сохранения (отмена, закрыть вкладку) то в окне 2 ничего не изменится.
+По поводу структуры: некоторые компоненты явно перегружены кодом, по-хорошему их надо разделить на функциональную и презентационную; структура компонентов notes (add, edit) не корректная (лежат рядом друг с другом, а должны быть вложенностью к notes)
+Все вышеперечисленные недоработки не являются для меня проблемой, просто не успеваю до понедельника всё причесать.
